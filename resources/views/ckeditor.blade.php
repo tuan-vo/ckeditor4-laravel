@@ -18,8 +18,12 @@
             }
         </style>
         <div id="container">
-            <div id="editor">
-            </div>
+            <form action="/create" method="post">
+                @csrf
+                <textarea id="editor" name="content">
+                </textarea>
+                <button type="submit">Submit</button>
+            </form>
         </div>
         <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/super-build/ckeditor.js"></script>
         <script>
@@ -61,7 +65,7 @@
                         { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
                     ]
                 },
-                placeholder: 'Welcome to CKEditor 5!',
+                placeholder: 'Hello!',
                 fontFamily: {
                     options: [
                         'default',

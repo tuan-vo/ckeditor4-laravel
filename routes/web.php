@@ -19,3 +19,5 @@ Route::get('/', function () {
 Route::get('/ckeditor', function () {
     return view('ckeditor');
 });
+
+Route::post('/create', [\App\Http\Controllers\EditorController::class, 'store']);
