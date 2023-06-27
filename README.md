@@ -1,25 +1,151 @@
-# CKEditor4 - Laravel
+# CKEditor5 - Laravel (use link by cdn)
 
-1. Install CKEditor 4:
- https://ckeditor.com/ckeditor-4/download
-- choose Standard Package
-- Unzip the downloaded file and move the CKEditor folder to the public folder of the Laravel project. The path should look like this: /public/ckeditor
-2. Using CKEditor in Laravel Code:
+Step 1: Create a basic form
 ```
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-
-<textarea name="editor"></textarea>
-<br>
-<button onclick="f_getData()">get Data</button>
-
-
-<script>
- CKEDITOR.replace('editor');
-
-  function f_getData() {
-      var editor = CKEDITOR.instances.editor;
-      var editorData = editor.getData();
-      console.log(editorData);
-  }
-</script>
+<form action="/create" method="post">
+    @csrf
+    <textarea id="editor" name="content"></textarea>
+    <button type="submit">Submit</button>
+</form>
+```
+Step 2: Link to cdn:
+```
+<script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/super-build/ckeditor.js"></script>
+```
+Step 3: Create editor use ckeditor5
+```
+            CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
+                toolbar: {
+                    items: [
+                        'exportPDF','exportWord', '|',
+                        'findAndReplace', 'selectAll', '|',
+                        'heading', '|',
+                        'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                        'bulletedList', 'numberedList', 'todoList', '|',
+                        'outdent', 'indent', '|',
+                        'undo', 'redo',
+                        '-',
+                        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                        'alignment', '|',
+                        'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                        'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                        'textPartLanguage', '|',
+                        'sourceEditing'
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+                list: {
+                    properties: {
+                        styles: true,
+                        startIndex: true,
+                        reversed: true
+                    }
+                },
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                    ]
+                },
+                placeholder: 'Hello!',
+                fontFamily: {
+                    options: [
+                        'default',
+                        'Arial, Helvetica, sans-serif',
+                        'Courier New, Courier, monospace',
+                        'Georgia, serif',
+                        'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                        'Tahoma, Geneva, sans-serif',
+                        'Times New Roman, Times, serif',
+                        'Trebuchet MS, Helvetica, sans-serif',
+                        'Verdana, Geneva, sans-serif'
+                    ],
+                    supportAllValues: true
+                },
+                fontSize: {
+                    options: [ 10, 12, 14, 'default', 18, 20, 22 ],
+                    supportAllValues: true
+                },
+                htmlSupport: {
+                    allow: [
+                        {
+                            name: /.*/,
+                            attributes: true,
+                            classes: true,
+                            styles: true
+                        }
+                    ]
+                },
+                htmlEmbed: {
+                    showPreviews: true
+                },
+                link: {
+                    decorators: {
+                        addTargetToExternalLinks: true,
+                        defaultProtocol: 'https://',
+                        toggleDownloadable: {
+                            mode: 'manual',
+                            label: 'Downloadable',
+                            attributes: {
+                                download: 'file'
+                            }
+                        }
+                    }
+                },
+                mention: {
+                    feeds: [
+                        {
+                            marker: '@',
+                            feed: [
+                                '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
+                                '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
+                                '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
+                                '@sugar', '@sweet', '@topping', '@wafer'
+                            ],
+                            minimumCharacters: 1
+                        }
+                    ]
+                },
+                removePlugins: [
+                    'CKBox',
+                    'CKFinder',
+                    'EasyImage',
+                    'RealTimeCollaborativeComments',
+                    'RealTimeCollaborativeTrackChanges',
+                    'RealTimeCollaborativeRevisionHistory',
+                    'PresenceList',
+                    'Comments',
+                    'TrackChanges',
+                    'TrackChangesData',
+                    'RevisionHistory',
+                    'Pagination',
+                    'WProofreader',
+                    'MathType',
+                    'SlashCommand',
+                    'Template',
+                    'DocumentOutline',
+                    'FormatPainter',
+                    'TableOfContents'
+                ]
+            });
+```
+Step 4: Transfer data to the server
+1. In routes/web.php:
+```
+Route::post('/create', [\App\Http\Controllers\EditorController::class, 'store']);
+```
+2. In create Controller:
+```
+php artisan make:controller EditorController
+```
+3. In \App\Http\Controllers\EditorController:
+```
+    public function store(Request $request){
+        dd($request->all());
+    }
 ```
