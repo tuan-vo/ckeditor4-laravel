@@ -149,3 +149,6 @@ php artisan make:controller EditorController
         dd($request->all());
     }
 ```
+------------------------------------
+#References
+https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/quick-start.html
