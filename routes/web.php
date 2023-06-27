@@ -16,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/ckeditor_page', function () {
-    return view('ckeditor_page');
+Route::get('/ckeditor', function () {
+    return view('ckeditor');
 });
