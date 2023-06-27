@@ -1,0 +1,1 @@
+window.CKEDITOR = require('@ckeditor/ckeditor5-source-editing');
